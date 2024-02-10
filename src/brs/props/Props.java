@@ -146,7 +146,8 @@ public class Props {
             "brs.debugTraceAccounts",
             "");
 
-    public static final Prop<String> BRS_DEBUG_TRACE_LOG = new Prop<>("brs.debugTraceLog",
+    public static final Prop<String> BRS_DEBUG_TRACE_LOG = new Prop<>(
+            "brs.debugTraceLog",
             "LOG_AccountBalances_trace.csv");
     public static final Prop<Integer> BRS_COMMUNICATION_LOGGING_MASK = new Prop<>(
             "brs.communicationLoggingMask",
@@ -270,15 +271,20 @@ public class Props {
             4);
     public static final Prop<String> P2P_BLACKLISTED_PEERS = new Prop<>("P2P.BlacklistedPeers", "");
     public static final Prop<Integer> P2P_MAX_CONNECTIONS = new Prop<>("P2P.MaxConnections", 20);
+    //TODO: Rename this property to remove the underscore
     public static final Prop<Integer> P2P_TIMEOUT_CONNECT_MS = new Prop<>(
             "P2P.TimeoutConnect_ms",
             4000);
+
+    //TODO: Rename this property to remove the underscore
     public static final Prop<Integer> P2P_TIMEOUT_READ_MS = new Prop<>("P2P.TimeoutRead_ms", 8000);
+    //TODO: Rename this property to remove the underscore
     public static final Prop<Integer> P2P_BLACKLISTING_TIME_MS = new Prop<>(
             "P2P.BlacklistingTime_ms",
             600000);
     public static final Prop<Integer> P2P_MAX_BLOCKS = new Prop<>("P2P.MaxBlocks", 720);
 
+    //TODO: Rename this property to remove the underscore
     public static final Prop<Integer> P2P_TIMEOUT_IDLE_MS = new Prop<>("P2P.TimeoutIdle_ms", 30000);
 
     public static final Prop<Boolean> P2P_USE_PEERS_DB = new Prop<>("P2P.usePeersDb", true);
@@ -318,14 +324,18 @@ public class Props {
 
     public static final Prop<String> API_LISTEN = new Prop<>("API.Listen", "127.0.0.1");
 
+    //TODO: Rename this property to remove the underscore
     public static final Prop<String> API_UI_DIR = new Prop<>("API.UI_Dir", "html/ui");
     public static final Prop<String> API_DOC_MODE = new Prop<>("API.DocMode", "modern");
+    //TODO: Rename this property to remove the underscore
     public static final Prop<String> API_SSL_KEY_STORE_PATH = new Prop<>(
             "API.SSL_keyStorePath",
             "keystore");
+    //TODO: Rename this property to remove the underscore
     public static final Prop<String> API_SSL_KEY_STORE_PASSWORD = new Prop<>(
             "API.SSL_keyStorePassword",
             "password");
+    //TODO: Rename this property to remove the underscore
     public static final Prop<String> API_SSL_LETSENCRYPT_PATH = new Prop<>(
             "API.SSL_letsencryptPath",
             "");
