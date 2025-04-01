@@ -54,7 +54,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public long getTradeVolume(long assetId, int heightStart, int heightEnd) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.select(DSL.sum(TRADE.QUANTITY)).from(TRADE).where(TRADE.ASSET_ID.eq(assetId))
           .and(TRADE.HEIGHT.ge(heightStart))
           .and(TRADE.HEIGHT.le(heightEnd))
@@ -64,7 +64,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public long getHighPrice(long assetId, int heightStart, int heightEnd) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.select(DSL.max(TRADE.PRICE)).from(TRADE).where(TRADE.ASSET_ID.eq(assetId))
           .and(TRADE.HEIGHT.ge(heightStart))
           .and(TRADE.HEIGHT.le(heightEnd))
@@ -74,7 +74,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public long getLowPrice(long assetId, int heightStart, int heightEnd) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.select(DSL.min(TRADE.PRICE)).from(TRADE).where(TRADE.ASSET_ID.eq(assetId))
           .and(TRADE.HEIGHT.ge(heightStart))
           .and(TRADE.HEIGHT.le(heightEnd))
@@ -84,7 +84,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public long getOpenPrice(long assetId, int heightStart, int heightEnd) {
-     return Db.useDSLContext(ctx -> {
+     return Db.useDslContext(ctx -> {
        Record record = ctx.select(TRADE.PRICE).from(TRADE).where(TRADE.ASSET_ID.eq(assetId))
           .and(TRADE.HEIGHT.ge(heightStart))
           .and(TRADE.HEIGHT.le(heightEnd))
@@ -97,7 +97,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public long getClosePrice(long assetId, int heightStart, int heightEnd) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       Record record = ctx.select(TRADE.PRICE).from(TRADE).where(TRADE.ASSET_ID.eq(assetId))
         .and(TRADE.HEIGHT.ge(heightStart))
         .and(TRADE.HEIGHT.le(heightEnd))
@@ -111,7 +111,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public Collection<Trade> getAccountTrades(long accountId, int from, int to) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<TradeRecord> selectQuery = ctx
               .selectFrom(TRADE).where(
                       TRADE.SELLER_ID.eq(accountId)
@@ -133,7 +133,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public Collection<Trade> getAccountAssetTrades(long accountId, long assetId, int from, int to) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<TradeRecord> selectQuery = ctx
               .selectFrom(TRADE).where(
                       TRADE.SELLER_ID.eq(accountId).and(TRADE.ASSET_ID.eq(assetId))
@@ -154,7 +154,7 @@ public class SqlTradeStore implements TradeStore {
   
   @Override
   public Collection<Trade> getOrderTrades(long orderId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<TradeRecord> selectQuery = ctx
               .selectFrom(TRADE).where(
                       TRADE.ASK_ORDER_ID.eq(orderId).or(TRADE.BID_ORDER_ID.eq(orderId))
@@ -168,7 +168,7 @@ public class SqlTradeStore implements TradeStore {
 
   @Override
   public int getTradeCount(long assetId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.fetchCount(ctx.selectFrom(TRADE).where(TRADE.ASSET_ID.eq(assetId)));
     });
   }

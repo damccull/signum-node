@@ -77,7 +77,7 @@ public class SqlAssetStore implements AssetStore {
   
   @Override
   public Collection<Asset> getAssetsByName(String name, int from, int to){
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<AssetRecord> query = ctx.selectFrom(ASSET).where(DSL.upper(ASSET.NAME).like("%"+name.toUpperCase()+"%")).getQuery();
       query.addOrderBy(ASSET.HEIGHT.asc(), ASSET.ID);
       DbUtils.applyLimits(query, from, to);

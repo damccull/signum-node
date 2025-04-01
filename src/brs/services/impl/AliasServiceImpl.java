@@ -115,7 +115,7 @@ public class AliasServiceImpl implements AliasService {
 
   @Override
   public int getAliasCount(long tld) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectJoinStep<?> r = ctx.selectCount().from(ALIAS);
       return (r.where(ALIAS.LATEST.isTrue()).and(ALIAS.TLD.eq(tld))).fetchOne(0, int.class);
     });

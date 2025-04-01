@@ -149,14 +149,14 @@ public class SqlATStore implements ATStore {
 
   @Override
   public boolean isATAccountId(Long id) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.fetchExists(ctx.selectOne().from(AT).where(AT.ID.eq(id)).and(AT.LATEST.isTrue()));
     });
   }
 
   @Override
   public List<Long> getOrderedATs() {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       AtConstants atConstants = AtConstants.getInstance();
       return ctx.selectFrom(
         AT.join(AT_STATE).on(AT.ID.eq(AT_STATE.AT_ID)).join(ACCOUNT_BALANCE).on(AT.ID.eq(ACCOUNT_BALANCE.ID))
@@ -190,7 +190,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public brs.at.AT getAT(Long id, int height) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectJoinStep<Record> select = ctx.select(AT.fields()).select(AT_STATE.fields()).from(AT.join(AT_STATE)
         .on(AT.ID.eq(AT_STATE.AT_ID)));
       ResultQuery<Record> where = null;
@@ -213,7 +213,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public Collection<brs.at.AT> getATs(Collection<Long> ids) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       Result<Record> result = ctx.select(AT.fields()).select(AT_STATE.fields())
         .from(AT.join(AT_STATE).on(AT.ID.eq(AT_STATE.AT_ID)))
         .where(AT.LATEST.isTrue()).and(AT_STATE.LATEST.isTrue()).and(AT.ID.in(ids))
@@ -238,7 +238,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public CollectionWithIndex<AtMapEntry> getMapValues(long atId, long key1, Long value, int from, int to) {
-    Result<Record> result = Db.useDSLContext(ctx -> {
+    Result<Record> result = Db.useDslContext(ctx -> {
       SelectConditionStep<Record> request = ctx.select(AT_MAP.fields()).from(AT_MAP).where(AT_MAP.LATEST.isTrue()).and(AT_MAP.AT_ID.eq(atId))
         .and(AT_MAP.KEY1.eq(key1));
       if (value != null) {
@@ -281,7 +281,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public List<Long> getATsIssuedBy(Long accountId, Long codeHashId, int from, int to) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectConditionStep<Record1<Long>> request = ctx.select(AT.ID).from(AT).where(AT.LATEST.isTrue());
       if (accountId != null) {
         request = request.and(AT.CREATOR_ID.eq(accountId));
@@ -298,7 +298,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public Collection<Long> getAllATIds(Long codeHashId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectConditionStep<AtRecord> request = ctx.selectFrom(AT).where(AT.LATEST.isTrue());
       if (codeHashId != null)
         request = request.and(AT.AP_CODE_HASH_ID.eq(codeHashId));
@@ -334,7 +334,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public Long findTransaction(int startHeight, int endHeight, Long atID, int numOfTx, long minActivationAmount) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       long startTime = System.nanoTime();
 
       SelectQuery<Record1<Long>> query = ctx.select(TRANSACTION.ID)
@@ -355,7 +355,7 @@ public class SqlATStore implements ATStore {
 
   @Override
   public int findTransactionHeight(Long transactionId, int height, Long atID, long minActivationAmount) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       long startTime = System.nanoTime();
       try {
         List<Long> transactionIds = ctx.select(TRANSACTION.ID)

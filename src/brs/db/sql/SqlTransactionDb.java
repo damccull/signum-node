@@ -22,7 +22,7 @@ public class SqlTransactionDb implements TransactionDb {
 
   @Override
   public Transaction findTransaction(long transactionId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       try {
         TransactionRecord transactionRecord = ctx.selectFrom(TRANSACTION).where(TRANSACTION.ID.eq(transactionId)).fetchOne();
         return loadTransaction(transactionRecord);
@@ -34,7 +34,7 @@ public class SqlTransactionDb implements TransactionDb {
 
   @Override
   public Transaction findTransactionByFullHash(String fullHash) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       try {
         TransactionRecord transactionRecord = ctx.selectFrom(TRANSACTION).where(TRANSACTION.FULL_HASH.eq(Convert.parseHexString(fullHash))).fetchOne();
         return loadTransaction(transactionRecord);
@@ -46,14 +46,14 @@ public class SqlTransactionDb implements TransactionDb {
 
   @Override
   public boolean hasTransaction(long transactionId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.fetchExists(ctx.selectFrom(TRANSACTION).where(TRANSACTION.ID.eq(transactionId)));
     });
   }
 
   @Override
   public boolean hasTransactionByFullHash(String fullHash) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.fetchExists(ctx.selectFrom(TRANSACTION).where(TRANSACTION.FULL_HASH.eq(Convert.parseHexString(fullHash))));
     });
   }
@@ -110,7 +110,7 @@ public class SqlTransactionDb implements TransactionDb {
 
   @Override
   public List<Transaction> findBlockTransactions(long blockId, boolean onlySigned) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectConditionStep<TransactionRecord> select = ctx.selectFrom(TRANSACTION)
           .where(TRANSACTION.BLOCK_ID.eq(blockId));
       if(onlySigned) {
@@ -146,7 +146,7 @@ public class SqlTransactionDb implements TransactionDb {
 
   public void saveTransactions(List<Transaction> transactions) {
     if (!transactions.isEmpty()) {
-      Db.useDSLContext(ctx -> {
+      Db.useDslContext(ctx -> {
         BatchBindStep insertBatch = ctx.batch(
             ctx.insertInto(TRANSACTION, TRANSACTION.ID, TRANSACTION.DEADLINE,
                 TRANSACTION.SENDER_PUBLIC_KEY, TRANSACTION.RECIPIENT_ID, TRANSACTION.AMOUNT,

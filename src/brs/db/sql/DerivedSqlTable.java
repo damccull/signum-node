@@ -34,7 +34,7 @@ public abstract class DerivedSqlTable implements DerivedTable {
     if (!Db.isInTransaction()) {
       throw new IllegalStateException("Not in transaction");
     }
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       ctx.delete(tableClass).where(heightField.gt(height)).execute();
     });
   }
@@ -44,7 +44,7 @@ public abstract class DerivedSqlTable implements DerivedTable {
     if (!Db.isInTransaction()) {
       throw new IllegalStateException("Not in transaction");
     }
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       ctx.delete(tableClass).execute();
     });
   }

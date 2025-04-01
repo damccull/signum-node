@@ -32,7 +32,7 @@ public abstract class VersionedEntitySqlTable<T> extends EntitySqlTable<T> imple
       throw new IllegalStateException("Not in transaction");
     }
 
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       // get dbKey's for entries whose stuff newer than height would be deleted, to allow fixing
       // their latest flag of the "potential" remaining newest entry
       SelectQuery<Record> selectForDeleteQuery = ctx.selectQuery();
@@ -81,7 +81,7 @@ public abstract class VersionedEntitySqlTable<T> extends EntitySqlTable<T> imple
 
     // "accounts" is just an example to make it easier to understand what the code does
     // select all accounts with multiple entries where height < trimToHeight[current height - 1440]
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       SelectQuery<Record> selectMaxHeightQuery = ctx.selectQuery();
       selectMaxHeightQuery.addFrom(tableClass);
       selectMaxHeightQuery.addSelect(DSL.max(heightField).as("max_height"));
@@ -130,7 +130,7 @@ public abstract class VersionedEntitySqlTable<T> extends EntitySqlTable<T> imple
       throw new IllegalStateException("Not in transaction");
     }
     DbKey dbKey = (DbKey) dbKeyFactory.newKey(t);
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       try {
         SelectQuery<Record> countQuery = ctx.selectQuery();
         countQuery.addFrom(tableClass);

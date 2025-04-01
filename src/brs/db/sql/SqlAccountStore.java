@@ -254,7 +254,7 @@ public class SqlAccountStore implements AccountStore {
 
   @Override
   public long getAllAccountsBalance() {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.select(DSL.sum(ACCOUNT_BALANCE.BALANCE)).from(ACCOUNT_BALANCE).where(ACCOUNT_BALANCE.LATEST.isTrue())
         .fetchOneInto(long.class);
     });
@@ -262,7 +262,7 @@ public class SqlAccountStore implements AccountStore {
 
   @Override
   public int getAssetAccountsCount(Asset asset, long minimumQuantity, boolean ignoreTreasury, boolean unconfirmed) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
 
       SelectConditionStep<Record1<Integer>> select = ctx.selectCount().from(ACCOUNT_ASSET)
         .where(ACCOUNT_ASSET.ASSET_ID.eq(asset.getId())).and(ACCOUNT_ASSET.LATEST.isTrue())
@@ -287,7 +287,7 @@ public class SqlAccountStore implements AccountStore {
 
   @Override
   public long getAssetCirculatingSupply(Asset asset, boolean ignoreTreasury, boolean unconfirmed) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
 
       SelectConditionStep<Record1<BigDecimal>> select = ctx.select(DSL.sum(
           unconfirmed ? ACCOUNT_ASSET.UNCONFIRMED_QUANTITY : ACCOUNT_ASSET.QUANTITY))
@@ -351,7 +351,7 @@ public class SqlAccountStore implements AccountStore {
     treasuryAccounts.add(0L);
     Transaction transaction = Signum.getBlockchain().getTransaction(asset.getId());
     if (transaction != null) {
-      treasuryAccounts.addAll(Db.useDSLContext(ctx -> {
+      treasuryAccounts.addAll(Db.useDslContext(ctx -> {
         return ctx.select(TRANSACTION.RECIPIENT_ID).from(TRANSACTION).where(TRANSACTION.TYPE.eq(TransactionType.TYPE_COLORED_COINS.getType()))
           .and(TRANSACTION.SUBTYPE.eq(TransactionType.SUBTYPE_COLORED_COINS_ADD_TREASURY_ACCOUNT))
           .and(TRANSACTION.REFERENCED_TRANSACTION_FULLHASH.eq(Convert.parseHexString(transaction.getFullHash())))

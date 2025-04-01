@@ -34,7 +34,7 @@ public abstract class ValuesSqlTable<T,V> extends DerivedSqlTable implements Val
   @SuppressWarnings("unchecked")
   @Override
   public final List<V> get(SignumKey nxtKey) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       DbKey dbKey = (DbKey) nxtKey;
       List<V> values;
       if (Db.isInTransaction()) {
@@ -67,7 +67,7 @@ public abstract class ValuesSqlTable<T,V> extends DerivedSqlTable implements Val
     if (!Db.isInTransaction()) {
       throw new IllegalStateException("Not in transaction");
     }
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       DbKey dbKey = (DbKey) dbKeyFactory.newKey(t);
       Db.getCache(table).put(dbKey, values);
       if (multiversion) {
