@@ -264,7 +264,7 @@ public final class Db {
         String version = "N/A";
         try {
             DSLContext ctx = getDSLContext();
-            ResultQuery queryVersion = ctx.resultQuery(
+            ResultQuery<Record> queryVersion = ctx.resultQuery(
                     databaseInstance.getDatabaseVersionSQLScript());
             Record record = queryVersion.fetchOne();
             if (record != null) {
