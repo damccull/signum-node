@@ -9,12 +9,6 @@ import brs.props.Props;
  */
 @SuppressWarnings({ "checkstyle:LineLengthCheck" })
 
-/**
- * All historical moments in the Signum blockchain, representing the blocks at
- * which various features were enabled. These are hard fork points.
- */
-@SuppressWarnings({ "checkstyle:LineLengthCheck" })
-
 public class HistoricalMoments {
     public static HistoricalMoments GENESIS = new HistoricalMoments(0, null);
     public static HistoricalMoments REWARD_RECIPIENT_ENABLE = new HistoricalMoments(6500,
