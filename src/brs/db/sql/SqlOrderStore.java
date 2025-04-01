@@ -111,7 +111,7 @@ public class SqlOrderStore implements OrderStore {
 
   @Override
   public Order.Ask getNextOrder(long assetId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<AskOrderRecord> query = ctx.selectFrom(ASK_ORDER)
               .where(ASK_ORDER.ASSET_ID.eq(assetId).and(ASK_ORDER.LATEST.isTrue()))
               .orderBy(ASK_ORDER.PRICE.asc(),
@@ -208,7 +208,7 @@ public class SqlOrderStore implements OrderStore {
 
   @Override
   public Order.Bid getNextBid(long assetId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<BidOrderRecord> query = ctx.selectFrom(BID_ORDER)
               .where(BID_ORDER.ASSET_ID.eq(assetId)
                       .and(BID_ORDER.LATEST.isTrue()))

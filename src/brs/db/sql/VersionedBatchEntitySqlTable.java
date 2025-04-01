@@ -76,7 +76,7 @@ public abstract class VersionedBatchEntitySqlTable<T> extends VersionedEntitySql
       return;
     }
 
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       UpdateQuery updateQuery = ctx.updateQuery(tableClass);
       updateQuery.addValue(latestField, false);
       for (String idColumn : dbKeyFactory.getPKColumns()) {

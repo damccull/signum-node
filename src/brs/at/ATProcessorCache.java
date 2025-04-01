@@ -149,7 +149,7 @@ public final class ATProcessorCache {
 
   private void loadTransactionsPerATs() {
     logger.debug("Loading tx for lo: {}, hi: {}, amount: {}, no ATs: {}", startBlockHeight, currentBlockHeight, minimumActivationAmount, getAtMap().size());
-    Result<TransactionRecord> result = Db.useDSLContext(ctx -> {
+    Result<TransactionRecord> result = Db.useDslContext(ctx -> {
       return ctx.selectFrom(TRANSACTION)
         .where(TRANSACTION.HEIGHT.between(startBlockHeight, currentBlockHeight))
         .and(TRANSACTION.RECIPIENT_ID.in(getCurrentBlockAtIds()))
@@ -174,7 +174,7 @@ public final class ATProcessorCache {
 
   private void loadTransactionsFromHeightUntilCurrentBlock(int startHeight, boolean shallRemoveOldest) {
     logger.debug("Loading all tx for heights from {} to {}", startHeight, currentBlockHeight - 1);
-    Result<TransactionRecord> result = Db.useDSLContext(ctx -> {
+    Result<TransactionRecord> result = Db.useDslContext(ctx -> {
       return ctx.selectFrom(TRANSACTION)
         .where(TRANSACTION.HEIGHT.between(startHeight, currentBlockHeight - 1))
         .and(TRANSACTION.RECIPIENT_ID.isNotNull())

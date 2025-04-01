@@ -94,7 +94,7 @@ public class SqlAliasStore implements AliasStore {
   }
 
   private void saveOffer(Alias.Offer offer) {
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       ctx.insertInto(ALIAS_OFFER, ALIAS_OFFER.ID, ALIAS_OFFER.PRICE, ALIAS_OFFER.BUYER_ID, ALIAS_OFFER.HEIGHT)
               .values(offer.getId(), offer.getPriceNqt(), (offer.getBuyerId() == 0 ? null : offer.getBuyerId()), Signum.getBlockchain().getHeight())
               .execute();
@@ -160,7 +160,7 @@ public class SqlAliasStore implements AliasStore {
   public Collection<Alias.Offer> getAliasOffers(long account, long buyer, int from, int to) {
     Condition conditions = ALIAS_OFFER.LATEST.eq(true);
     if(account != 0L) {
-      Result<Record1<Long>> myAliases = Db.useDSLContext(ctx -> {
+      Result<Record1<Long>> myAliases = Db.useDslContext(ctx -> {
       return ctx.select(ALIAS.ID).from(ALIAS).where(ALIAS.ACCOUNT_ID.eq(account)).fetch();
       });
       conditions = conditions.and(ALIAS_OFFER.ID.in(myAliases));

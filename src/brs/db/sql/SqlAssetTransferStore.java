@@ -40,7 +40,7 @@ public class SqlAssetTransferStore implements AssetTransferStore {
   }
 
   private void saveAssetTransfer(AssetTransfer assetTransfer) {
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       ctx.insertInto(
         ASSET_TRANSFER,
         ASSET_TRANSFER.ID, ASSET_TRANSFER.ASSET_ID, ASSET_TRANSFER.SENDER_ID, ASSET_TRANSFER.RECIPIENT_ID,
@@ -69,7 +69,7 @@ public class SqlAssetTransferStore implements AssetTransferStore {
 
   @Override
   public Collection<AssetTransfer> getAccountAssetTransfers(long accountId, int from, int to) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery selectQuery = ctx
               .selectFrom(ASSET_TRANSFER).where(
                       ASSET_TRANSFER.SENDER_ID.eq(accountId)
@@ -89,7 +89,7 @@ public class SqlAssetTransferStore implements AssetTransferStore {
 
   @Override
   public Collection<AssetTransfer> getAccountAssetTransfers(long accountId, long assetId, int from, int to) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<AssetTransferRecord> selectQuery = ctx
               .selectFrom(ASSET_TRANSFER).where(
                       ASSET_TRANSFER.SENDER_ID.eq(accountId).and(ASSET_TRANSFER.ASSET_ID.eq(assetId))
@@ -110,7 +110,7 @@ public class SqlAssetTransferStore implements AssetTransferStore {
 
   @Override
   public int getTransferCount(long assetId) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.fetchCount(ctx.selectFrom(ASSET_TRANSFER).where(ASSET_TRANSFER.ASSET_ID.eq(assetId)));
     });
   }

@@ -76,7 +76,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
         return t;
       }
     }
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(dbKey.getPKConditions(tableClass));
@@ -93,7 +93,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
   public T get(SignumKey nxtKey, int height) {
     DbKey dbKey = (DbKey) nxtKey;
 
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(dbKey.getPKConditions(tableClass));
@@ -107,7 +107,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
 
   @Override
   public T getBy(Condition condition) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(condition);
@@ -124,7 +124,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
   public T getBy(Condition condition, int height) {
     checkAvailable(height);
 
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(condition);
@@ -173,7 +173,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
 
   @Override
   public Collection<T> getManyBy(Condition condition, int from, int to, List<SortField<?>> sort) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(condition);
@@ -194,7 +194,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
   @Override
   public Collection<T> getManyBy(Condition condition, int height, int from, int to, List<SortField<?>> sort) {
     checkAvailable(height);
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(condition);
@@ -256,7 +256,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
 
   @Override
   public Collection<T> getAll(int from, int to, List<SortField<?>> sort) {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       if (multiversion) {
@@ -276,7 +276,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
   @Override
   public Collection<T> getAll(int height, int from, int to, List<SortField<?>> sort) {
     checkAvailable(height);
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectQuery<Record> query = ctx.selectQuery();
       query.addFrom(tableClass);
       query.addConditions(heightField.le(height));
@@ -311,7 +311,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
 
   @Override
   public int getCount() {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       SelectJoinStep<?> r = ctx.selectCount().from(tableClass);
       return (multiversion ? r.where(latestField.isTrue()) : r).fetchOne(0, int.class);
     });
@@ -319,7 +319,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
 
   @Override
   public int getRowCount() {
-    return Db.useDSLContext(ctx -> {
+    return Db.useDslContext(ctx -> {
       return ctx.selectCount().from(tableClass).fetchOne(0, int.class);
     });
   }
@@ -337,7 +337,7 @@ public abstract class EntitySqlTable<T> extends DerivedSqlTable implements Entit
       throw new IllegalStateException("Different instance found in Db cache, perhaps trying to save an object "
                                       + "that was read outside the current transaction");
     }
-    Db.useDSLContext(ctx -> {
+    Db.useDslContext(ctx -> {
       if (multiversion) {
         UpdateQuery<?> query = ctx.updateQuery(tableClass);
         query.addValue(

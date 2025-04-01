@@ -109,7 +109,7 @@ public class SqlSubscriptionStore implements SubscriptionStore {
   @Override
   public void saveSubscriptions(Collection<Subscription> subscriptions) {
     if (!subscriptions.isEmpty()) {
-      Db.useDSLContext(ctx -> {
+      Db.useDslContext(ctx -> {
 
         // remove the latest flag for past entries
         ctx.batched(c -> {
