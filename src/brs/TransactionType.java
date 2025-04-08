@@ -122,6 +122,8 @@ public abstract class TransactionType {
     public static final long BASELINE_TLD_ASSIGNMENT_FACTOR = 10_000_000L;
     public static final long BASELINE_ALIAS_RENEWAL_FACTOR = 1250L;
 
+    private static final Collection<IndirectIncoming> NO_INDIRECTS = Collections.emptyList();
+
     private static Blockchain blockchain;
     private static FluxCapacitor fluxCapacitor;
     private static AccountService accountService;
@@ -130,27 +132,6 @@ public abstract class TransactionType {
     private static AssetExchange assetExchange;
     private static SubscriptionService subscriptionService;
     private static EscrowService escrowService;
-
-    /**
-     * A type of Signum transaction.
-     */
-    public static class Type {
-        private byte type;
-        private String description;
-
-        public Type(byte type, String description) {
-            this.type = type;
-            this.description = description;
-        }
-
-        public byte getType() {
-            return type;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-    }
 
     // TODO Temporary...
     @SuppressWarnings({ "checkstyle:MissingJavadocMethodCheck" })
@@ -511,6 +492,20 @@ public abstract class TransactionType {
         return Convert.safeAdd(fee.getConstantFee(), Convert.safeMultiply(appendageMultiplier, fee.getAppendagesFee()));
     }
 
+    /**
+     * Returns a collection of indirect incomings.
+     * An empty collection is returned by default. Transaction types should override
+     * this with an implementation.
+     * 
+     * @param transaction the transaction to check
+     * @return a list of {@link IndirectIncoming}s
+     */
+    public Collection<IndirectIncoming> getIndirectIncomings(Transaction transaction) {
+        // by default there is no indirect incomings, transaction types should implement
+        // it
+        return NO_INDIRECTS;
+    }
+
     public abstract boolean hasRecipient();
 
     public boolean isIndirect() {
@@ -524,6 +519,27 @@ public abstract class TransactionType {
     @Override
     public final String toString() {
         return "type: " + getType() + ", subtype: " + getSubtype();
+    }
+
+    /**
+     * A type of Signum transaction.
+     */
+    public static class Type {
+        private byte type;
+        private String description;
+
+        public Type(byte type, String description) {
+            this.type = type;
+            this.description = description;
+        }
+
+        public byte getType() {
+            return type;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
     /**
@@ -4081,23 +4097,6 @@ public abstract class TransactionType {
                     + appendagesFee
                     + '}';
         }
-    }
-
-    private static final Collection<IndirectIncoming> NO_INDIRECTS = Collections.emptyList();
-
-    /**
-     * Returns a collection of indirect incomings.
-     * An empty collection is returned by default. Transaction types should override
-     * this
-     * with an implementation.
-     * 
-     * @param transaction the transaction to check
-     * @return a list of {@link IndirectIncoming}s
-     */
-    public Collection<IndirectIncoming> getIndirectIncomings(Transaction transaction) {
-        // by default there is no indirect incomings, transaction types should implement
-        // it
-        return NO_INDIRECTS;
     }
 
 }
