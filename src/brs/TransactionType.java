@@ -484,6 +484,33 @@ public abstract class TransactionType {
         return TransactionDuplicationKey.IS_NEVER_DUPLICATE;
     }
 
+    /**
+     * Gets the baseline fee for this height.
+     */
+    public Fee getBaselineFee(int height) {
+        long feeQuant = fluxCapacitor.getValue(FluxValues.FEE_QUANT, height);
+        if (fluxCapacitor.getValue(FluxValues.SPEEDWAY, height)) {
+            return new Fee(feeQuant, feeQuant);
+        }
+        return new Fee((fluxCapacitor.getValue(FluxValues.PRE_POC2, height) ? feeQuant : ONE_SIGNA), 0);
+    }
+
+    /**
+     * Returns the minimum fee in NQT that this transaction will require.
+     * 
+     * @param height      height of the blockchain
+     * @param transaction the {@link Transaction} to calulate fees for
+     * @return the fee as a long, in NQT
+     */
+    public long minimumFeeNqt(int height, Transaction transaction) {
+        if (height < BASELINE_FEE_HEIGHT) {
+            return 0; // No need to validate fees before baseline block
+        }
+        Fee fee = getBaselineFee(height);
+        int appendageMultiplier = transaction.getAppendagesSize() / Constants.ORDINARY_TRANSACTION_BYTES;
+        return Convert.safeAdd(fee.getConstantFee(), Convert.safeMultiply(appendageMultiplier, fee.getAppendagesFee()));
+    }
+
     public abstract boolean hasRecipient();
 
     public boolean isIndirect() {
@@ -4025,34 +4052,8 @@ public abstract class TransactionType {
     }
 
     /**
-     * Returns the minimum fee in NQT that this transaction will require.
-     * 
-     * @param height      height of the blockchain
-     * @param transaction the {@link Transaction} to calulate fees for
-     * @return the fee as a long, in NQT
-     */
-    public long minimumFeeNqt(int height, Transaction transaction) {
-        if (height < BASELINE_FEE_HEIGHT) {
-            return 0; // No need to validate fees before baseline block
-        }
-        Fee fee = getBaselineFee(height);
-        int appendageMultiplier = transaction.getAppendagesSize() / Constants.ORDINARY_TRANSACTION_BYTES;
-        return Convert.safeAdd(fee.getConstantFee(), Convert.safeMultiply(appendageMultiplier, fee.getAppendagesFee()));
-    }
-
-    /**
-     * Gets the baseline fee for this height.
-     */
-    public Fee getBaselineFee(int height) {
-        long feeQuant = fluxCapacitor.getValue(FluxValues.FEE_QUANT, height);
-        if (fluxCapacitor.getValue(FluxValues.SPEEDWAY, height)) {
-            return new Fee(feeQuant, feeQuant);
-        }
-        return new Fee((fluxCapacitor.getValue(FluxValues.PRE_POC2, height) ? feeQuant : ONE_SIGNA), 0);
-    }
-
-    /**
-     * Represents a fee. Holds two separate amounts based on type of fee: constant, or appendage.
+     * Represents a fee. Holds two separate amounts based on type of fee: constant,
+     * or appendage.
      */
     public static final class Fee {
         private final long constantFee;
