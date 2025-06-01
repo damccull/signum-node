@@ -8,7 +8,8 @@ RUN echo "http://dl-3.alpinelinux.org/alpine/latest-stable/main" > /etc/apk/repo
   && echo "http://dl-3.alpinelinux.org/alpine/latest-stable/community" >> /etc/apk/repositories \
   && apk update && apk upgrade --available --no-cache
 
-RUN  apk update && apk upgrade \
+RUN apk update \
+  && apk upgrade \
   && apk add --no-cache --update --upgrade --virtual .build-deps-full \
     coreutils \
     bind-tools \
