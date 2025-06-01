@@ -75,6 +75,7 @@ let
   devShell = pkgs.mkShell {
     shellHook = '''';
     LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+    JAVA_HOME = "${pkgs.jdk}/lib";
     buildInputs = runtimeDeps;
     nativeBuildInputs = buildDeps ++ devDeps;
 
