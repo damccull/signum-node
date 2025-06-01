@@ -3,13 +3,11 @@
 {
   "name": "Java",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/java:1-17-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
 
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
       "version": "none",
-      "installMaven": "true",
-      "installGradle": "true"
     },
     "ghcr.io/itsmechlark/features/1password:1": {
       "version": "latest"
